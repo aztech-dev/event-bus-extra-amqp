@@ -2,8 +2,8 @@
 
 namespace Aztech\Events\Bus\Plugins\Amqp;
 
-use Aztech\Events\Bus\Channel\ChannelWriter;
 use Aztech\Events\Event;
+use Aztech\Events\Bus\Channel\ChannelWriter;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareInterface;
