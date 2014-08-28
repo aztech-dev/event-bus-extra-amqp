@@ -26,6 +26,56 @@ Composer is the only supported way of installing *aztech/event-bus-extra-amqp* .
 
 Add the following code to your bootstrap file :
 
-```
+```php
 require_once 'vendor/autoload.php';
 ```
+
+## Dependencies
+
+  * videlalvaro/php-amqplib : ~2
+
+## Supported elements :
+
+  * Persistent publish
+  * Subscribe
+
+## Configuration options & defaults
+
+| Parameter | Default | Description |
+|--------------|-------------|-------------------------------------------------------------------------------------------|
+| `host` | `127.0.0.1` | Hostname of the AMQP broker. |
+| `port` | `5672` | Listening port of the AMQP broker. |
+| `user` | `guest` | AMQP broker username. |
+| `pass` | `guest` | AMQP broker password. |
+| `vhost` | `/` | Virtual host name on the AMQP broker. |
+| `exchange` | `exchange` | Name of the exchange. |
+| `event-queue` | `event-queue` | Name of the event queue. |
+| `event-prefix` | ` ` | Prefix that will be automatically added to published/stripped from received event topics. |
+| `auto-create` | `true` | Toggles the providers topology creation feature. Allows to auto-create the required exchanges, queues, and bindings for the provider's need. |
+
+## Initialization
+
+```php
+
+require_once 'vendor/autoload.php';
+
+use \Aztech\Events\Bus\Events;
+use \Aztech\Events\Bus\Plugins\Amqp\Amqp;
+
+Amqp::loadPlugin();
+
+// See options chart for actual parameters
+$options = array(...);
+
+$publisher = Events::createPublisher('amqp', $options);
+$event = Events::create('category', array('property' => 'value'));
+
+$publisher->publish($event);
+// ...
+```
+
+## Caveats
+
+At the time being, the AMQP event plugin uses topic based routing to publish events. Multiple nodes connecting to a single queue will work in round-robin mode.
+
+It is possible to use different routing scenarios/exchange types, but that is left as an exercise to the reader (Hint: no need to build/patch the current plugin).
